@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AQS — Address Quality Score API for Indian Lending</title>
+<meta name="description" content="Address scoring API for NBFC loan origination. Score Indian addresses 0-100 across 5 dimensions. Fraud detection. RBI audit-ready. ~120ms. Pay per request.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}:root{--bg:#0a0c10;--bg-card:#12151c;--bg-card-hover:#181c26;--text:#e8e6e1;--text-muted:#8a8880;--text-dim:#5a5850;--accent:#3ecf8e;--accent-glow:rgba(62,207,142,0.08);--red:#e55b4f;--amber:#e5a84f;--blue:#4f8ee5;--border:#222630;--border-hover:#2e3340;--mono:'JetBrains Mono',monospace;--sans:'DM Sans',system-ui,sans-serif;--radius:6px}html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.65;overflow-x:hidden}a{color:var(--accent);text-decoration:none;transition:opacity .15s}a:hover{opacity:.8}::selection{background:var(--accent);color:var(--bg)}.container{max-width:1080px;margin:0 auto;padding:0 24px}.badge{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-glow);border:1px solid rgba(62,207,142,.15);padding:4px 12px;border-radius:20px}nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,12,16,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}nav .inner{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px}nav .logo{font-weight:700;font-size:18px;letter-spacing:-.02em}nav .logo span{color:var(--accent)}nav .links{display:flex;gap:28px;align-items:center}nav .links a{color:var(--text-muted);font-size:14px;font-weight:500;transition:color .15s}nav .links a:hover{color:var(--text);opacity:1}nav .cta-btn{background:var(--accent);color:var(--bg);font-weight:600;font-size:13px;padding:7px 18px;border-radius:var(--radius);border:none;cursor:pointer;transition:transform .1s,box-shadow .15s}nav .cta-btn:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(62,207,142,.25)}.hero{padding:140px 0 80px;text-align:center;position:relative}.hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(62,207,142,.06) 0%,transparent 70%);pointer-events:none}.hero h1{font-size:clamp(36px,5vw,56px);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin:20px 0 24px;max-width:720px;margin-left:auto;margin-right:auto}.hero h1 em{font-style:normal;color:var(--accent)}.hero p.sub{font-size:18px;color:var(--text-muted);max-width:580px;margin:0 auto 40px;line-height:1.6}.hero-stats{display:flex;justify-content:center;gap:48px;margin-top:48px;flex-wrap:wrap}.hero-stats .stat{text-align:center}.hero-stats .stat .num{font-family:var(--mono);font-size:32px;font-weight:700;color:var(--accent)}.hero-stats .stat .label{font-size:13px;color:var(--text-dim);margin-top:4px}.code-section{padding:40px 0 80px}.code-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;overflow:hidden;max-width:720px;margin:0 auto}.code-card .tab-bar{display:flex;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:12px}.code-card .tab{padding:10px 20px;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}.code-card .tab.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(62,207,142,.04)}.code-card pre{padding:24px;margin:0;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.7;color:var(--text-muted)}.k{color:var(--blue)}.s{color:var(--accent)}.n{color:#c9a0ff}.c{color:var(--text-dim);font-style:italic}.f{color:var(--amber)}.section{padding:80px 0}.section h2{font-size:32px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}.section .subtitle{color:var(--text-muted);font-size:16px;margin-bottom:48px}.score-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}@media(max-width:768px){.score-grid{grid-template-columns:repeat(2,1fr)}}.score-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 16px;text-align:center;transition:border-color .15s}.score-item:hover{border-color:var(--border-hover)}.score-item .pts{font-family:var(--mono);font-size:28px;font-weight:700;margin-bottom:4px}.score-item .pts.a{color:var(--blue)}.score-item .pts.b{color:var(--accent)}.score-item .pts.c{color:#c9a0ff}.score-item .pts.d{color:var(--amber)}.score-item .pts.e{color:var(--red)}.score-item .name{font-size:13px;color:var(--text-muted);font-weight:500}.range-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}@media(max-width:768px){.range-grid{grid-template-columns:1fr}}.range-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;position:relative;overflow:hidden}.range-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}.range-card.high::before{background:var(--accent)}.range-card.mid::before{background:var(--amber)}.range-card.low::before{background:var(--red)}.range-card .range{font-family:var(--mono);font-size:14px;font-weight:600;margin-bottom:8px}.range-card.high .range{color:var(--accent)}.range-card.mid .range{color:var(--amber)}.range-card.low .range{color:var(--red)}.range-card .label{font-size:16px;font-weight:600;margin-bottom:8px}.range-card .desc{font-size:13px;color:var(--text-muted);line-height:1.5}.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}@media(max-width:768px){.feat-grid{grid-template-columns:1fr}}.feat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;transition:border-color .15s}.feat-card:hover{border-color:var(--border-hover)}.feat-card .icon{font-family:var(--mono);font-size:20px;color:var(--accent);margin-bottom:12px}.feat-card h3{font-size:16px;font-weight:600;margin-bottom:8px}.feat-card p{font-size:14px;color:var(--text-muted);line-height:1.55}.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}@media(max-width:768px){.pricing-grid{grid-template-columns:1fr}}.price-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:32px 28px}.price-card.featured{border-color:var(--accent);box-shadow:0 0 40px rgba(62,207,142,.06)}.price-card .plan-name{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:16px}.price-card.featured .plan-name{color:var(--accent)}.price-card .price{font-family:var(--mono);font-size:36px;font-weight:700;margin-bottom:4px}.price-card .price .currency{font-size:20px;vertical-align:top;line-height:2}.price-card .price .unit{font-size:14px;font-weight:400;color:var(--text-muted)}.price-card .price-note{font-size:13px;color:var(--text-dim);margin-bottom:24px}.price-card ul{list-style:none;padding:0}.price-card li{font-size:14px;color:var(--text-muted);padding:6px 0 6px 20px;position:relative}.price-card li::before{content:'';position:absolute;left:0;top:12px;width:8px;height:8px;border-radius:50%;background:var(--accent);opacity:.5}.price-card.featured li::before{opacity:1}.plan-cta{display:block;text-align:center;margin-top:28px;padding:12px;border-radius:var(--radius);font-weight:600;font-size:14px;cursor:pointer;border:none;width:100%;font-family:var(--sans);transition:all .15s}.plan-cta.primary{background:var(--accent);color:var(--bg)}.plan-cta.primary:hover{box-shadow:0 4px 20px rgba(62,207,142,.3);transform:translateY(-1px)}.plan-cta.secondary{background:transparent;color:var(--text);border:1px solid var(--border)}.plan-cta.secondary:hover{border-color:var(--text-muted)}.pricing-note{text-align:center;margin-top:32px;font-size:13px;color:var(--text-dim)}.int-step{margin-bottom:48px}.int-step .step-header{display:flex;align-items:center;gap:16px;margin-bottom:16px}.int-step .step-num{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--bg);background:var(--accent);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}.int-step .step-title{font-size:18px;font-weight:600}.int-step .step-desc{color:var(--text-muted);font-size:15px;margin-bottom:16px;padding-left:48px}.code-block{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-left:48px}.code-block .lang-bar{display:flex;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:11px}.code-block .lang-tab{padding:8px 16px;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}.code-block .lang-tab.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(62,207,142,.04)}.code-block pre{padding:20px;margin:0;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.65;color:var(--text-muted)}.cta-section{padding:80px 0;text-align:center;border-top:1px solid var(--border)}.cta-section h2{font-size:28px;font-weight:700;margin-bottom:12px}.cta-section p{color:var(--text-muted);margin-bottom:32px;font-size:16px}.btn-primary{background:var(--accent);color:var(--bg);font-family:var(--sans);font-weight:600;font-size:15px;padding:12px 28px;border-radius:var(--radius);border:none;cursor:pointer;display:inline-block;transition:transform .1s,box-shadow .15s}.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 24px rgba(62,207,142,.3)}footer{padding:40px 0;border-top:1px solid var(--border);text-align:center}footer p{font-size:13px;color:var(--text-dim)}.sep{border-top:1px solid var(--border)}@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.hero .badge,.hero h1,.hero p.sub,.hero-stats{animation:fadeUp .6s ease-out both}.hero h1{animation-delay:.1s}.hero p.sub{animation-delay:.2s}.hero-stats{animation-delay:.3s}</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"AQS — Address Quality Score API","description":"Address scoring API for Indian NBFC loan origination. Returns a 0-100 quality score and evidence flags. Pay per request.","applicationCategory":"FinanceApplication","offers":{"@type":"AggregateOffer","priceCurrency":"INR","lowPrice":"0.30","highPrice":"0.75","offerCount":"3"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does the AQS API return?","acceptedAnswer":{"@type":"Answer","text":"A 0-100 address quality score, five component scores (pincode correctness, locality membership, address specificity, geocode confidence, gibberish detection), evidence flags, and an immutable audit ID. Your system decides what to do with the score."}},{"@type":"Question","name":"Is AQS compliant with RBI audit requirements?","acceptedAnswer":{"@type":"Answer","text":"Yes. Every scoring request produces an immutable, timestamped audit record written before the API response returns. Queryable by application ID or date range."}},{"@type":"Question","name":"How long does an API call take?","acceptedAnswer":{"@type":"Answer","text":"Typical response time is approximately 120 milliseconds."}}]}</script>
+</head>
+<body>
+
+<nav><div class="inner"><div class="logo"><span>AQS</span> API</div><div class="links"><a href="#scoring">Scoring</a><a href="#pricing">Pricing</a><a href="#integration">Integration</a><button class="cta-btn" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Get API key</button></div></div></nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero"><div class="container">
+<div class="badge">REST API &middot; Pay per request</div>
+<h1>Address quality scoring for <em>Indian lending</em></h1>
+<p class="sub">Score any Indian address 0&ndash;100 at the point of loan origination. You get the score and evidence flags. Your LOS makes the decision.</p>
+<div class="hero-stats">
+<div class="stat"><div class="num">~120ms</div><div class="label">API response</div></div>
+<div class="stat"><div class="num">0&ndash;100</div><div class="label">Quality score</div></div>
+<div class="stat"><div class="num">5</div><div class="label">Scoring dimensions</div></div>
+<div class="stat"><div class="num">2</div><div class="label">API calls to score</div></div>
+</div></div></section>
+
+<!-- ===== LIVE EXAMPLE ===== -->
+<section class="code-section"><div class="container"><div class="code-card">
+<div class="tab-bar"><div class="tab active" data-target="hero-req">Request</div><div class="tab" data-target="hero-res">Response</div></div>
+<pre id="hero-req"><span class="c"># Step 1: Lookup pincode (returns session token)</span>
+<span class="k">POST</span> https://api.aqs.in/v1/pincode/lookup
+<span class="k">Authorization:</span> Bearer aqs_your_key
+
+{ <span class="s">"pincode"</span>: <span class="s">"560001"</span> }
+
+<span class="c"># Step 2: Score the address</span>
+<span class="k">POST</span> https://api.aqs.in/v1/aqs/calculate
+<span class="k">Authorization:</span> Bearer aqs_your_key
+<span class="k">X-Pincode-Lookup:</span> SESSION_TOKEN_FROM_STEP_1
+
+{
+  <span class="s">"raw_address"</span>: <span class="s">"Flat 101, ABC Apartments, MG Road"</span>,
+  <span class="s">"pincode"</span>: <span class="s">"560001"</span>,
+  <span class="s">"parsed_components"</span>: { <span class="s">"locality"</span>: <span class="s">"Cubbon Park"</span> },
+  <span class="s">"application_ref"</span>: <span class="s">"LOAN-2024-00123"</span>,
+  <span class="s">"use_nominatim"</span>: <span class="n">false</span>
+}</pre>
+<pre id="hero-res" style="display:none">{
+  <span class="s">"aqs_score"</span>: <span class="n">87</span>,
+  <span class="s">"aqs_status"</span>: <span class="s">"high_confidence"</span>,
+  <span class="s">"checks"</span>: {
+    <span class="s">"pincode_city_state"</span>: { <span class="s">"score"</span>: <span class="n">20</span>, <span class="s">"max"</span>: <span class="n">20</span> },
+    <span class="s">"locality"</span>:           { <span class="s">"score"</span>: <span class="n">30</span>, <span class="s">"max"</span>: <span class="n">30</span> },
+    <span class="s">"specificity"</span>:        { <span class="s">"score"</span>: <span class="n">12</span>, <span class="s">"max"</span>: <span class="n">15</span> },
+    <span class="s">"nominatim"</span>:          { <span class="s">"score"</span>: <span class="n">15</span>, <span class="s">"max"</span>: <span class="n">25</span> },
+    <span class="s">"gibberish"</span>:          { <span class="s">"score"</span>: <span class="n">10</span>, <span class="s">"max"</span>: <span class="n">10</span> }
+  },
+  <span class="s">"flags"</span>: [],
+  <span class="s">"suggestions"</span>: [],
+  <span class="s">"rejection_reason"</span>: <span class="n">null</span>,
+  <span class="s">"audit_id"</span>: <span class="s">"a1b2c3d4-e5f6-..."</span>
+}</pre>
+</div></div></section>
+
+<!-- ===== SCORING ===== -->
+<section class="section" id="scoring"><div class="container">
+<h2>Five-dimension scoring</h2>
+<p class="subtitle">Every address scored across 100 points. Transparent, auditable, deterministic. Your LOS decides what to do with the score.</p>
+<div class="score-grid">
+<div class="score-item"><div class="pts a">/20</div><div class="name">Pincode & city-state truth</div></div>
+<div class="score-item"><div class="pts b">/30</div><div class="name">Locality membership</div></div>
+<div class="score-item"><div class="pts c">/15</div><div class="name">Address specificity</div></div>
+<div class="score-item"><div class="pts d">/25</div><div class="name">Geocode confidence</div></div>
+<div class="score-item"><div class="pts e">/10</div><div class="name">Gibberish detection</div></div>
+</div>
+<div class="range-grid">
+<div class="range-card high"><div class="range">AQS 85&ndash;100</div><div class="label">High confidence</div><div class="desc">Address verified across multiple dimensions. Strong pincode match, locality confirmed, specific enough for delivery. Typically used for auto-approval in lending flows.</div></div>
+<div class="range-card mid"><div class="range">AQS 50&ndash;84</div><div class="label">Medium confidence</div><div class="desc">Partial verification. Some dimensions scored well but others flagged — locality unconfirmed, low specificity, or geocode mismatch. Most NBFCs trigger additional verification here.</div></div>
+<div class="range-card low"><div class="range">AQS 0&ndash;49</div><div class="label">Low confidence</div><div class="desc">Significant quality issues. Flags may include gibberish patterns, locality not in pincode, city-state mismatch. Evidence flags explain exactly why. Most NBFCs require manual review or field verification.</div></div>
+</div>
+</div></section>
+
+<!-- ===== FLAGS ===== -->
+<section class="section sep"><div class="container">
+<h2>Evidence flags tell you why</h2>
+<p class="subtitle">The score tells you how much to trust. The flags tell you what's wrong.</p>
+<div class="feat-grid">
+<div class="feat-card"><div class="icon">[flag]</div><h3>CITY_STATE_MISMATCH</h3><p>User-provided city or state doesn't match pincode truth. The pincode says Karnataka but the applicant wrote Maharashtra.</p></div>
+<div class="feat-card"><div class="icon">[flag]</div><h3>LOCALITY_NOT_IN_PINCODE</h3><p>The locality claimed doesn't exist in this pincode's known localities. Could be a typo, could be fabricated.</p></div>
+<div class="feat-card"><div class="icon">[flag]</div><h3>GIBBERISH_DETECTED</h3><p>Address text shows adversarial patterns — consonant clusters, repeated characters, keyboard-mash sequences.</p></div>
+<div class="feat-card"><div class="icon">[flag]</div><h3>LOW_GRANULARITY</h3><p>No house number, flat number, or street name found. Address lacks the specificity needed for physical delivery or field verification.</p></div>
+<div class="feat-card"><div class="icon">[flag]</div><h3>NO_GEOCODE_HIT</h3><p>Address couldn't be geocoded. This is a soft signal — valid new colonies may not be in any database yet.</p></div>
+<div class="feat-card"><div class="icon">[flag]</div><h3>FRAUD_SUSPICIOUS_ATTEMPTS</h3><p>Multiple low-score attempts from this device/session within the configured window. Pattern suggests address cycling.</p></div>
+</div>
+</div></section>
+
+<!-- ===== FEATURES ===== -->
+<section class="section sep" id="features"><div class="container">
+<h2>Built for NBFC compliance</h2>
+<div class="feat-grid">
+<div class="feat-card"><div class="icon">[audit]</div><h3>RBI-ready audit trail</h3><p>Every scoring request produces an immutable, timestamped record. Component scores, raw input, fraud context — queryable by application ID or date range.</p></div>
+<div class="feat-card"><div class="icon">[shield]</div><h3>Fraud memory</h3><p>Tracks suspicious attempts across sessions per tenant. Configurable thresholds flag repeat offenders automatically. Your LOS decides the consequence.</p></div>
+<div class="feat-card"><div class="icon">[lock]</div><h3>Tenant isolation</h3><p>Your fraud signals, audit trail, and scoring config are fully isolated. No data crosses tenant boundaries.</p></div>
+<div class="feat-card"><div class="icon">[zap]</div><h3>~120ms response</h3><p>Redis-cached lookups, cached geocoding, optimized fuzzy matching. Built for real-time loan origination flows.</p></div>
+<div class="feat-card"><div class="icon">[webhook]</div><h3>LOS webhooks</h3><p>HMAC-signed webhook delivery to your Loan Origination System after every score. Exponential retry with dead-letter support.</p></div>
+<div class="feat-card"><div class="icon">[config]</div><h3>Your rules, your thresholds</h3><p>Configure fraud sensitivity, scoring feature flags, and webhook events per tenant. The scoring engine adapts to your risk appetite.</p></div>
+</div>
+</div></section>
+
+<!-- ===== PRICING ===== -->
+<section class="section sep" id="pricing"><div class="container">
+<h2>Simple per-request pricing</h2>
+<p class="subtitle">Pay only for what you use. No setup fees. No monthly minimums.</p>
+<div class="pricing-grid">
+<div class="price-card">
+<div class="plan-name">Starter</div>
+<div class="price"><span class="currency">&#8377;</span>0.75 <span class="unit">/ score</span></div>
+<div class="price-note">Up to 10,000 requests/month</div>
+<ul><li>Full 5-dimension scoring</li><li>Evidence flags</li><li>Fraud detection</li><li>Audit trail (30-day retention)</li><li>Email support</li></ul>
+<button class="plan-cta secondary" onclick="window.location.href='mailto:ravi@example.com?subject=AQS%20Starter'">Get started</button>
+</div>
+<div class="price-card featured">
+<div class="plan-name">Growth</div>
+<div class="price"><span class="currency">&#8377;</span>0.50 <span class="unit">/ score</span></div>
+<div class="price-note">10,000 &ndash; 100,000 requests/month</div>
+<ul><li>Everything in Starter</li><li>LOS webhooks (HMAC signed)</li><li>Configurable thresholds</li><li>Audit trail (1-year retention)</li><li>Priority support + SLA</li></ul>
+<button class="plan-cta primary" onclick="window.location.href='mailto:ravi@example.com?subject=AQS%20Growth'">Get started</button>
+</div>
+<div class="price-card">
+<div class="plan-name">Enterprise</div>
+<div class="price"><span class="currency">&#8377;</span>0.30 <span class="unit">/ score</span></div>
+<div class="price-note">100,000+ requests/month</div>
+<ul><li>Everything in Growth</li><li>Custom fraud rules</li><li>Unlimited audit retention</li><li>Dedicated tenant config</li><li>Dedicated support + onboarding</li></ul>
+<button class="plan-cta secondary" onclick="window.location.href='mailto:ravi@example.com?subject=AQS%20Enterprise'">Contact us</button>
+</div>
+</div>
+<p class="pricing-note">All plans include tenant isolation, RBI-compliant audit logging, and TLS 1.3. Hosted in AWS Mumbai (ap-south-1).</p>
+</div></section>
+
+<!-- ===== INTEGRATION ===== -->
+<section class="section sep" id="integration"><div class="container">
+<h2>Integrate in 15 minutes</h2>
+<p class="subtitle">Two API calls. You get a score and flags. Your LOS decides what to do.</p>
+
+<div class="int-step">
+<div class="step-header"><div class="step-num">1</div><div class="step-title">Get your API key</div></div>
+<p class="step-desc">We provision your tenant and send you an API key. All requests authenticate with this key.</p>
+<div class="code-block"><pre><span class="k">Authorization:</span> Bearer aqs_k8xP2mN4vQ7rLsT9...</pre></div>
+</div>
+
+<div class="int-step">
+<div class="step-header"><div class="step-num">2</div><div class="step-title">Lookup the pincode</div></div>
+<p class="step-desc">Validates the pincode and returns a session token, state, district, and known localities. The session token is required for scoring.</p>
+<div class="code-block" id="step2-code">
+<div class="lang-bar"><div class="lang-tab active" data-group="2" data-lang="curl2">curl</div><div class="lang-tab" data-group="2" data-lang="py2">Python</div><div class="lang-tab" data-group="2" data-lang="js2">Node.js</div></div>
+<pre data-group="2" data-lang="curl2"><span class="f">curl</span> -X POST https://api.aqs.in/v1/pincode/lookup \
+  -H <span class="s">"Authorization: Bearer aqs_YOUR_KEY"</span> \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d <span class="s">'{"pincode": "560001"}'</span>
+
+<span class="c"># Response includes session_token, state, district, localities</span></pre>
+<pre data-group="2" data-lang="py2" style="display:none"><span class="k">import</span> requests
+
+lookup = requests.<span class="f">post</span>(
+    <span class="s">"https://api.aqs.in/v1/pincode/lookup"</span>,
+    headers={<span class="s">"Authorization"</span>: <span class="s">"Bearer aqs_YOUR_KEY"</span>},
+    json={<span class="s">"pincode"</span>: <span class="s">"560001"</span>},
+)
+session_token = lookup.<span class="f">json</span>()[<span class="s">"session_token"</span>]
+<span class="c"># Also returns: state, district, localities</span></pre>
+<pre data-group="2" data-lang="js2" style="display:none"><span class="k">const</span> lookup = <span class="k">await</span> <span class="f">fetch</span>(<span class="s">"https://api.aqs.in/v1/pincode/lookup"</span>, {
+  method: <span class="s">"POST"</span>,
+  headers: {
+    <span class="s">"Authorization"</span>: <span class="s">"Bearer aqs_YOUR_KEY"</span>,
+    <span class="s">"Content-Type"</span>: <span class="s">"application/json"</span>,
+  },
+  body: JSON.<span class="f">stringify</span>({ pincode: <span class="s">"560001"</span> }),
+});
+<span class="k">const</span> { session_token } = <span class="k">await</span> lookup.<span class="f">json</span>();
+<span class="c">// Also returns: state, district, localities</span></pre>
+</div></div>
+
+<div class="int-step">
+<div class="step-header"><div class="step-num">3</div><div class="step-title">Score the address</div></div>
+<p class="step-desc">Send the address with the session token. Get back a score, component breakdown, and evidence flags in ~120ms.</p>
+<div class="code-block" id="step3-code">
+<div class="lang-bar"><div class="lang-tab active" data-group="3" data-lang="curl3">curl</div><div class="lang-tab" data-group="3" data-lang="py3">Python</div><div class="lang-tab" data-group="3" data-lang="js3">Node.js</div></div>
+<pre data-group="3" data-lang="curl3"><span class="f">curl</span> -X POST https://api.aqs.in/v1/aqs/calculate \
+  -H <span class="s">"Authorization: Bearer aqs_YOUR_KEY"</span> \
+  -H <span class="s">"X-Pincode-Lookup: SESSION_TOKEN"</span> \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d <span class="s">'{
+    "raw_address": "Flat 101, ABC Apartments, MG Road",
+    "pincode": "560001",
+    "parsed_components": {"locality": "Cubbon Park"},
+    "application_ref": "LOAN-2024-00123",
+    "use_nominatim": false
+  }'</span>
+
+<span class="c"># Returns: aqs_score, checks, flags, audit_id</span></pre>
+<pre data-group="3" data-lang="py3" style="display:none">result = requests.<span class="f">post</span>(
+    <span class="s">"https://api.aqs.in/v1/aqs/calculate"</span>,
+    headers={
+        <span class="s">"Authorization"</span>: <span class="s">"Bearer aqs_YOUR_KEY"</span>,
+        <span class="s">"X-Pincode-Lookup"</span>: session_token,
+    },
+    json={
+        <span class="s">"raw_address"</span>: <span class="s">"Flat 101, ABC Apartments, MG Road"</span>,
+        <span class="s">"pincode"</span>: <span class="s">"560001"</span>,
+        <span class="s">"parsed_components"</span>: {<span class="s">"locality"</span>: <span class="s">"Cubbon Park"</span>},
+        <span class="s">"application_ref"</span>: <span class="s">"LOAN-2024-00123"</span>,
+        <span class="s">"use_nominatim"</span>: <span class="n">False</span>,
+    },
+).<span class="f">json</span>()
+
+score = result[<span class="s">"aqs_score"</span>]   <span class="c"># 87</span>
+flags = result[<span class="s">"flags"</span>]       <span class="c"># [] (clean address)</span>
+audit = result[<span class="s">"audit_id"</span>]   <span class="c"># for your records</span></pre>
+<pre data-group="3" data-lang="js3" style="display:none"><span class="k">const</span> res = <span class="k">await</span> <span class="f">fetch</span>(<span class="s">"https://api.aqs.in/v1/aqs/calculate"</span>, {
+  method: <span class="s">"POST"</span>,
+  headers: {
+    <span class="s">"Authorization"</span>: <span class="s">"Bearer aqs_YOUR_KEY"</span>,
+    <span class="s">"X-Pincode-Lookup"</span>: sessionToken,
+    <span class="s">"Content-Type"</span>: <span class="s">"application/json"</span>,
+  },
+  body: JSON.<span class="f">stringify</span>({
+    raw_address: <span class="s">"Flat 101, ABC Apartments, MG Road"</span>,
+    pincode: <span class="s">"560001"</span>,
+    parsed_components: { locality: <span class="s">"Cubbon Park"</span> },
+    application_ref: <span class="s">"LOAN-2024-00123"</span>,
+    use_nominatim: <span class="n">false</span>,
+  }),
+});
+<span class="k">const</span> { aqs_score, flags, audit_id } = <span class="k">await</span> res.<span class="f">json</span>();
+<span class="c">// aqs_score: 87, flags: [], audit_id: "a1b2..."</span></pre>
+</div></div>
+
+<div class="int-step">
+<div class="step-header"><div class="step-num">4</div><div class="step-title">Use the score in your LOS</div></div>
+<p class="step-desc">The score and flags feed into your existing decisioning logic. AQS scores, you decide.</p>
+<div class="code-block" id="step4-code">
+<div class="lang-bar"><div class="lang-tab active" data-group="4" data-lang="py4">Python</div><div class="lang-tab" data-group="4" data-lang="js4">Node.js</div></div>
+<pre data-group="4" data-lang="py4">score = result[<span class="s">"aqs_score"</span>]
+flags = result[<span class="s">"flags"</span>]
+
+<span class="c"># Your decisioning logic — AQS doesn't prescribe actions</span>
+<span class="k">if</span> score >= <span class="n">85</span> <span class="k">and not</span> flags:
+    <span class="f">approve_loan</span>(application_id)
+
+<span class="k">elif</span> score >= <span class="n">50</span>:
+    <span class="f">request_additional_kyc</span>(application_id, flags=flags)
+
+<span class="k">elif</span> <span class="s">"GIBBERISH_DETECTED"</span> <span class="k">in</span> flags:
+    <span class="f">reject_application</span>(application_id, reason=<span class="s">"Address quality insufficient"</span>)
+
+<span class="k">else</span>:
+    <span class="f">trigger_field_verification</span>(application_id)</pre>
+<pre data-group="4" data-lang="js4" style="display:none"><span class="k">const</span> { aqs_score, flags } = result;
+
+<span class="c">// Your decisioning logic — AQS doesn't prescribe actions</span>
+<span class="k">if</span> (aqs_score >= <span class="n">85</span> && flags.length === <span class="n">0</span>) {
+  <span class="k">await</span> <span class="f">approveLoan</span>(applicationId);
+}
+<span class="k">else if</span> (aqs_score >= <span class="n">50</span>) {
+  <span class="k">await</span> <span class="f">requestAdditionalKyc</span>(applicationId, { flags });
+}
+<span class="k">else if</span> (flags.<span class="f">includes</span>(<span class="s">"GIBBERISH_DETECTED"</span>)) {
+  <span class="k">await</span> <span class="f">rejectApplication</span>(applicationId, <span class="s">"Address quality insufficient"</span>);
+}
+<span class="k">else</span> {
+  <span class="k">await</span> <span class="f">triggerFieldVerification</span>(applicationId);
+}</pre>
+</div></div>
+
+</div></section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section" id="cta"><div class="container">
+<h2>Score your first address in 15 minutes</h2>
+<p>Get an API key and start integrating today.</p>
+<a href="mailto:ravi@example.com?subject=AQS%20API%20Key%20Request" class="btn-primary">Request API key</a>
+</div></section>
+
+<footer><div class="container"><p>AQS &mdash; Address Quality Score API for Indian lending &middot; Hosted in AWS Mumbai (ap-south-1)</p></div></footer>
+
+<script>
+document.addEventListener('click',function(e){
+var t=e.target.closest('.tab,.lang-tab');if(!t)return;
+if(t.classList.contains('tab')){var id=t.dataset.target,c=t.closest('.code-card');c.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});t.classList.add('active');c.querySelectorAll('pre[id]').forEach(function(p){p.style.display='none'});document.getElementById(id).style.display='block'}
+if(t.classList.contains('lang-tab')){var g=t.dataset.group,l=t.dataset.lang,b=t.closest('.code-block');b.querySelectorAll('.lang-tab').forEach(function(x){x.classList.remove('active')});t.classList.add('active');b.querySelectorAll('pre[data-group="'+g+'"]').forEach(function(p){p.style.display=p.dataset.lang===l?'block':'none'})}
+});
+</script>
+</body>
+</html>
