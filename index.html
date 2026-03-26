@@ -2,297 +2,398 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AQS — Address Quality Score API for Indian Lending</title>
-<meta name="description" content="Address scoring API for NBFC loan origination. Score Indian addresses 0-100 across 5 dimensions. Fraud detection. RBI audit-ready. ~120ms. Pay per request.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AQS — Origination Risk Intelligence for NBFCs</title>
+<meta name="description" content="Every address tells a story. AQS reads it before you spend on bureau — address quality, velocity trends, identity patterns, and risk signals in one API call.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}:root{--bg:#0a0c10;--bg-card:#12151c;--bg-card-hover:#181c26;--text:#e8e6e1;--text-muted:#8a8880;--text-dim:#5a5850;--accent:#3ecf8e;--accent-glow:rgba(62,207,142,0.08);--red:#e55b4f;--amber:#e5a84f;--blue:#4f8ee5;--border:#222630;--border-hover:#2e3340;--mono:'JetBrains Mono',monospace;--sans:'DM Sans',system-ui,sans-serif;--radius:6px}html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.65;overflow-x:hidden}a{color:var(--accent);text-decoration:none;transition:opacity .15s}a:hover{opacity:.8}::selection{background:var(--accent);color:var(--bg)}.container{max-width:1080px;margin:0 auto;padding:0 24px}.badge{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-glow);border:1px solid rgba(62,207,142,.15);padding:4px 12px;border-radius:20px}nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,12,16,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}nav .inner{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px}nav .logo{font-weight:700;font-size:18px;letter-spacing:-.02em}nav .logo span{color:var(--accent)}nav .links{display:flex;gap:28px;align-items:center}nav .links a{color:var(--text-muted);font-size:14px;font-weight:500;transition:color .15s}nav .links a:hover{color:var(--text);opacity:1}nav .cta-btn{background:var(--accent);color:var(--bg);font-weight:600;font-size:13px;padding:7px 18px;border-radius:var(--radius);border:none;cursor:pointer;transition:transform .1s,box-shadow .15s}nav .cta-btn:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(62,207,142,.25)}.hero{padding:140px 0 80px;text-align:center;position:relative}.hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(62,207,142,.06) 0%,transparent 70%);pointer-events:none}.hero h1{font-size:clamp(36px,5vw,56px);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin:20px 0 24px;max-width:720px;margin-left:auto;margin-right:auto}.hero h1 em{font-style:normal;color:var(--accent)}.hero p.sub{font-size:18px;color:var(--text-muted);max-width:580px;margin:0 auto 40px;line-height:1.6}.hero-stats{display:flex;justify-content:center;gap:48px;margin-top:48px;flex-wrap:wrap}.hero-stats .stat{text-align:center}.hero-stats .stat .num{font-family:var(--mono);font-size:32px;font-weight:700;color:var(--accent)}.hero-stats .stat .label{font-size:13px;color:var(--text-dim);margin-top:4px}.code-section{padding:40px 0 80px}.code-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;overflow:hidden;max-width:720px;margin:0 auto}.code-card .tab-bar{display:flex;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:12px}.code-card .tab{padding:10px 20px;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}.code-card .tab.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(62,207,142,.04)}.code-card pre{padding:24px;margin:0;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.7;color:var(--text-muted)}.k{color:var(--blue)}.s{color:var(--accent)}.n{color:#c9a0ff}.c{color:var(--text-dim);font-style:italic}.f{color:var(--amber)}.section{padding:80px 0}.section h2{font-size:32px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}.section .subtitle{color:var(--text-muted);font-size:16px;margin-bottom:48px}.score-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}@media(max-width:768px){.score-grid{grid-template-columns:repeat(2,1fr)}}.score-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 16px;text-align:center;transition:border-color .15s}.score-item:hover{border-color:var(--border-hover)}.score-item .pts{font-family:var(--mono);font-size:28px;font-weight:700;margin-bottom:4px}.score-item .pts.a{color:var(--blue)}.score-item .pts.b{color:var(--accent)}.score-item .pts.c{color:#c9a0ff}.score-item .pts.d{color:var(--amber)}.score-item .pts.e{color:var(--red)}.score-item .name{font-size:13px;color:var(--text-muted);font-weight:500}.range-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}@media(max-width:768px){.range-grid{grid-template-columns:1fr}}.range-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;position:relative;overflow:hidden}.range-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}.range-card.high::before{background:var(--accent)}.range-card.mid::before{background:var(--amber)}.range-card.low::before{background:var(--red)}.range-card .range{font-family:var(--mono);font-size:14px;font-weight:600;margin-bottom:8px}.range-card.high .range{color:var(--accent)}.range-card.mid .range{color:var(--amber)}.range-card.low .range{color:var(--red)}.range-card .label{font-size:16px;font-weight:600;margin-bottom:8px}.range-card .desc{font-size:13px;color:var(--text-muted);line-height:1.5}.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}@media(max-width:768px){.feat-grid{grid-template-columns:1fr}}.feat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;transition:border-color .15s}.feat-card:hover{border-color:var(--border-hover)}.feat-card .icon{font-family:var(--mono);font-size:20px;color:var(--accent);margin-bottom:12px}.feat-card h3{font-size:16px;font-weight:600;margin-bottom:8px}.feat-card p{font-size:14px;color:var(--text-muted);line-height:1.55}.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}@media(max-width:768px){.pricing-grid{grid-template-columns:1fr}}.price-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:32px 28px}.price-card.featured{border-color:var(--accent);box-shadow:0 0 40px rgba(62,207,142,.06)}.price-card .plan-name{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:16px}.price-card.featured .plan-name{color:var(--accent)}.price-card .price{font-family:var(--mono);font-size:36px;font-weight:700;margin-bottom:4px}.price-card .price .currency{font-size:20px;vertical-align:top;line-height:2}.price-card .price .unit{font-size:14px;font-weight:400;color:var(--text-muted)}.price-card .price-note{font-size:13px;color:var(--text-dim);margin-bottom:24px}.price-card ul{list-style:none;padding:0}.price-card li{font-size:14px;color:var(--text-muted);padding:6px 0 6px 20px;position:relative}.price-card li::before{content:'';position:absolute;left:0;top:12px;width:8px;height:8px;border-radius:50%;background:var(--accent);opacity:.5}.price-card.featured li::before{opacity:1}.plan-cta{display:block;text-align:center;margin-top:28px;padding:12px;border-radius:var(--radius);font-weight:600;font-size:14px;cursor:pointer;border:none;width:100%;font-family:var(--sans);transition:all .15s}.plan-cta.primary{background:var(--accent);color:var(--bg)}.plan-cta.primary:hover{box-shadow:0 4px 20px rgba(62,207,142,.3);transform:translateY(-1px)}.plan-cta.secondary{background:transparent;color:var(--text);border:1px solid var(--border)}.plan-cta.secondary:hover{border-color:var(--text-muted)}.pricing-note{text-align:center;margin-top:32px;font-size:13px;color:var(--text-dim)}.int-step{margin-bottom:48px}.int-step .step-header{display:flex;align-items:center;gap:16px;margin-bottom:16px}.int-step .step-num{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--bg);background:var(--accent);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}.int-step .step-title{font-size:18px;font-weight:600}.int-step .step-desc{color:var(--text-muted);font-size:15px;margin-bottom:16px;padding-left:48px}.code-block{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-left:48px}.code-block .lang-bar{display:flex;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:11px}.code-block .lang-tab{padding:8px 16px;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}.code-block .lang-tab.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(62,207,142,.04)}.code-block pre{padding:20px;margin:0;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.65;color:var(--text-muted)}.cta-section{padding:80px 0;text-align:center;border-top:1px solid var(--border)}.cta-section h2{font-size:28px;font-weight:700;margin-bottom:12px}.cta-section p{color:var(--text-muted);margin-bottom:32px;font-size:16px}.btn-primary{background:var(--accent);color:var(--bg);font-family:var(--sans);font-weight:600;font-size:15px;padding:12px 28px;border-radius:var(--radius);border:none;cursor:pointer;display:inline-block;transition:transform .1s,box-shadow .15s}.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 24px rgba(62,207,142,.3)}footer{padding:40px 0;border-top:1px solid var(--border);text-align:center}footer p{font-size:13px;color:var(--text-dim)}.sep{border-top:1px solid var(--border)}@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.hero .badge,.hero h1,.hero p.sub,.hero-stats{animation:fadeUp .6s ease-out both}.hero h1{animation-delay:.1s}.hero p.sub{animation-delay:.2s}.hero-stats{animation-delay:.3s}</style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"AQS — Address Quality Score API","description":"Address scoring API for Indian NBFC loan origination. Returns a 0-100 quality score and evidence flags. Pay per request.","applicationCategory":"FinanceApplication","offers":{"@type":"AggregateOffer","priceCurrency":"INR","lowPrice":"0.30","highPrice":"0.75","offerCount":"3"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does the AQS API return?","acceptedAnswer":{"@type":"Answer","text":"A 0-100 address quality score, five component scores (pincode correctness, locality membership, address specificity, geocode confidence, gibberish detection), evidence flags, and an immutable audit ID. Your system decides what to do with the score."}},{"@type":"Question","name":"Is AQS compliant with RBI audit requirements?","acceptedAnswer":{"@type":"Answer","text":"Yes. Every scoring request produces an immutable, timestamped audit record written before the API response returns. Queryable by application ID or date range."}},{"@type":"Question","name":"How long does an API call take?","acceptedAnswer":{"@type":"Answer","text":"Typical response time is approximately 120 milliseconds."}}]}</script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0a1120;--navy-light:#101c30;--navy-mid:#172540;
+  --teal:#10b981;--teal-dim:#0a7a56;--teal-glow:rgba(16,185,129,.10);
+  --coral:#ef6c35;--coral-dim:rgba(239,108,53,.10);
+  --amber:#f59e0b;--amber-dim:rgba(245,158,11,.10);
+  --red:#ef4444;--red-dim:rgba(239,68,68,.10);
+  --purple:#818cf8;--purple-dim:rgba(129,140,248,.10);
+  --text:#e2e8f0;--text-dim:#94a3b8;--text-muted:#64748b;
+  --border:rgba(148,163,184,.08);--border-hover:rgba(148,163,184,.18);
+  --font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;--font-display:'Instrument Serif',serif;
+}
+html{scroll-behavior:smooth;background:var(--navy)}
+body{font-family:var(--font-body);color:var(--text);background:var(--navy);line-height:1.6;overflow-x:hidden}
+a{color:var(--teal);text-decoration:none}a:hover{text-decoration:underline}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes barGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.fade-up{animation:fadeUp .6s ease both}
+.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.3s}.d4{animation-delay:.4s}
+.container{max-width:1120px;margin:0 auto;padding:0 24px}
+section{padding:88px 0}
+.section-label{font-family:var(--font-mono);font-size:12px;color:var(--teal);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px}
+.section-title{font-size:clamp(26px,3.5vw,38px);font-weight:700;line-height:1.15;letter-spacing:-.01em;max-width:700px}
+.section-sub{font-size:15px;color:var(--text-dim);max-width:600px;margin-top:14px;line-height:1.7}
+
+/* ─── HERO ─── */
+.hero{padding:72px 0 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-300px;right:-200px;width:700px;height:700px;background:radial-gradient(circle,var(--teal-glow) 0%,transparent 65%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 13px;border-radius:100px;border:1px solid var(--border);font-size:12px;color:var(--teal);font-family:var(--font-mono);margin-bottom:20px;background:var(--teal-glow)}
+.hero-badge span{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite}
+.hero h1{font-family:var(--font-display);font-size:clamp(38px,5.5vw,60px);font-weight:400;line-height:1.08;margin-bottom:20px;font-style:italic}
+.hero h1 em{font-style:normal;color:var(--teal);font-family:var(--font-body);font-weight:700}
+.hero p.sub{font-size:16px;color:var(--text-dim);max-width:460px;margin-bottom:32px;line-height:1.7}
+.hero-cta{display:inline-flex;align-items:center;gap:10px;padding:13px 28px;background:var(--teal);color:var(--navy);font-weight:700;font-size:14px;border-radius:8px;border:none;cursor:pointer;transition:all .2s}
+.hero-cta:hover{background:#34d399;transform:translateY(-1px);text-decoration:none}
+.hero-secondary{display:inline-flex;align-items:center;gap:6px;margin-left:14px;padding:13px 20px;color:var(--text-dim);font-size:13px;border:1px solid var(--border);border-radius:8px;transition:all .2s}
+.hero-secondary:hover{border-color:var(--teal);color:var(--teal);text-decoration:none}
+
+/* ─── PRINCIPLE ─── */
+.principle{padding:36px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center}
+.principle-text{font-size:18px;font-weight:700;letter-spacing:.01em}
+.principle-text em{font-style:normal;color:var(--teal)}
+.principle-sub{font-size:13px;color:var(--text-muted);margin-top:6px}
+
+/* ─── TRUST BAR ─── */
+.trust-bar{padding:28px 0;border-bottom:1px solid var(--border)}
+.trust-bar-inner{display:flex;justify-content:center;gap:40px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-muted)}
+.trust-item svg{width:16px;height:16px;color:var(--teal);flex-shrink:0}
+
+/* ─── DEMO SECTION ─── */
+.calc-section{background:var(--navy-light);position:relative;overflow:hidden}
+.calc-section::after{content:'';position:absolute;bottom:-200px;left:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(16,185,129,.04) 0%,transparent 70%);pointer-events:none}
+
+/* ─── PROBLEM CARDS ─── */
+.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.problem-card{background:var(--navy-light);border:1px solid var(--border);border-radius:12px;padding:28px;position:relative;overflow:hidden}
+.problem-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.problem-card:nth-child(1)::before{background:var(--red)}.problem-card:nth-child(2)::before{background:var(--amber)}.problem-card:nth-child(3)::before{background:var(--coral)}
+.problem-num{font-family:var(--font-mono);font-size:40px;font-weight:700;line-height:1;margin-bottom:14px}
+.problem-card:nth-child(1) .problem-num{color:var(--red)}.problem-card:nth-child(2) .problem-num{color:var(--amber)}.problem-card:nth-child(3) .problem-num{color:var(--coral)}
+.problem-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.problem-card p{font-size:13px;color:var(--text-dim);line-height:1.7}
+
+/* ─── VELOCITY CHART ─── */
+.velocity-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;margin-top:40px}
+.velocity-chart{background:var(--navy-light);border:1px solid var(--border);border-radius:12px;padding:28px}
+.chart-bars{display:flex;align-items:flex-end;gap:10px;height:160px;margin-top:14px;padding-bottom:28px;border-bottom:1px solid var(--border);position:relative}
+.chart-bar{flex:1;position:relative}
+.chart-bar .bar{width:100%;border-radius:3px 3px 0 0;transform-origin:bottom;animation:barGrow .8s ease both}
+.chart-bar .bar-label{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:10px;font-weight:700;white-space:nowrap}
+.chart-bar .month{font-size:10px;color:var(--text-muted);font-family:var(--font-mono);position:absolute;bottom:-22px;left:50%;transform:translateX(-50%)}
+.bar-normal{background:var(--teal-dim)}.bar-normal .bar-label{color:var(--teal)}
+.bar-spike{background:var(--coral)}.bar-spike .bar-label{color:var(--coral)}
+.velocity-text h3{font-size:20px;font-weight:700;margin-bottom:14px}
+.velocity-text p{font-size:14px;color:var(--text-dim);line-height:1.7;margin-bottom:14px}
+.velocity-callout{background:var(--coral-dim);border:1px solid rgba(239,108,53,.15);border-radius:8px;padding:12px 16px;font-size:12px;color:var(--coral);font-family:var(--font-mono);line-height:1.5}
+
+/* ─── LAYERS ─── */
+.layers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.layer-card{background:var(--navy-light);border:1px solid var(--border);border-radius:12px;padding:28px;transition:border-color .2s,transform .2s}
+.layer-card:hover{border-color:rgba(16,185,129,.2);transform:translateY(-2px)}
+.layer-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:16px}
+.layer-card:nth-child(1) .layer-icon{background:var(--teal-glow);color:var(--teal)}
+.layer-card:nth-child(2) .layer-icon{background:var(--coral-dim);color:var(--coral)}
+.layer-card:nth-child(3) .layer-icon{background:var(--amber-dim);color:var(--amber)}
+.layer-card h3{font-size:16px;font-weight:700;margin-bottom:10px}
+.layer-card ul{list-style:none;padding:0}.layer-card li{font-size:13px;color:var(--text-dim);padding:5px 0 5px 18px;position:relative;line-height:1.5}
+.layer-card li::before{content:'\2192';position:absolute;left:0;color:var(--text-muted);font-size:11px}
+
+/* ─── SIGNALS TABLE ─── */
+.signals-table{width:100%;border-collapse:separate;border-spacing:0;margin-top:40px;font-size:13px;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+.signals-table th{background:var(--navy-mid);color:var(--text);font-weight:600;padding:12px 16px;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border)}
+.signals-table td{padding:14px 16px;border-bottom:1px solid var(--border);color:var(--text-dim);line-height:1.5;vertical-align:top}
+.signals-table tr:last-child td{border-bottom:none}
+.signals-table td:first-child{color:var(--text);font-weight:600;min-width:160px}
+.risk-badge{display:inline-block;padding:2px 9px;border-radius:100px;font-size:11px;font-weight:700;font-family:var(--font-mono)}
+.risk-badge.high{background:var(--red-dim);color:var(--red)}.risk-badge.elevated{background:var(--amber-dim);color:var(--amber)}.risk-badge.medium{background:var(--purple-dim);color:var(--purple)}
+
+/* ─── API BLOCK ─── */
+.api-section{background:var(--navy-light)}
+.api-block{background:var(--navy);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:40px;max-width:720px}
+.api-header{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--border);background:rgba(0,0,0,.2)}
+.api-method{font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--navy);background:var(--teal);padding:2px 7px;border-radius:4px}
+.api-path{font-family:var(--font-mono);font-size:12px;color:var(--text-dim)}
+.api-block pre{padding:20px;font-family:var(--font-mono);font-size:11.5px;line-height:1.6;overflow-x:auto;margin:0;color:var(--text-dim)}
+.api-block .k{color:var(--teal)}.api-block .s{color:var(--coral)}.api-block .n{color:var(--amber)}.api-block .b{color:#a78bfa}
+
+/* ─── STEPS ─── */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
+.step-card{background:var(--navy-light);border:1px solid var(--border);border-radius:12px;padding:24px 20px;text-align:center;position:relative}
+.step-num{font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--teal);margin-bottom:10px}
+.step-card h3{font-size:14px;font-weight:700;margin-bottom:6px}.step-card p{font-size:12px;color:var(--text-dim);line-height:1.6}
+.step-arrow{position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:16px;z-index:1}
+
+/* ─── TRUST ─── */
+.trust-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:40px}
+.trust-card{display:flex;gap:14px;padding:22px;background:var(--navy-light);border:1px solid var(--border);border-radius:12px}
+.trust-card .t-icon{width:36px;height:36px;border-radius:8px;background:var(--teal-glow);color:var(--teal);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.trust-card h4{font-size:14px;font-weight:700;margin-bottom:4px}.trust-card p{font-size:12px;color:var(--text-dim);line-height:1.6}
+
+/* ─── CTA ─── */
+.cta-section{text-align:center;padding:88px 0 110px}
+.cta-section h2{font-family:var(--font-display);font-size:clamp(28px,4vw,44px);font-weight:400;font-style:italic;margin-bottom:14px}
+.cta-section h2 em{font-style:normal;color:var(--teal);font-family:var(--font-body);font-weight:700}
+.cta-section>p{font-size:15px;color:var(--text-dim);max-width:480px;margin:0 auto 32px}
+.cta-form{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:500px;margin:0 auto}
+.cta-form input{flex:1;min-width:200px;padding:13px 16px;background:var(--navy-light);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:var(--font-body);outline:none;transition:border-color .2s}
+.cta-form input:focus{border-color:var(--teal)}.cta-form input::placeholder{color:var(--text-muted)}
+.cta-form button{padding:13px 28px;background:var(--teal);color:var(--navy);font-weight:700;font-size:14px;border:none;border-radius:8px;cursor:pointer;font-family:var(--font-body)}
+.cta-form button:hover{background:#34d399}
+.cta-note{font-size:11px;color:var(--text-muted);margin-top:10px}
+footer{border-top:1px solid var(--border);padding:28px 0;text-align:center;font-size:12px;color:var(--text-muted)}
+@media(max-width:900px){.hero-grid,.velocity-grid,.widget-grid{grid-template-columns:1fr}.problem-grid,.layers-grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}.step-arrow{display:none}.trust-grid{grid-template-columns:1fr}.hero-secondary{margin-left:0;margin-top:10px;display:flex}}
+@media(max-width:600px){.steps{grid-template-columns:1fr}section{padding:60px 0}.trust-bar-inner{gap:20px}}
+</style>
 </head>
 <body>
 
-<nav><div class="inner"><div class="logo"><span>AQS</span> API</div><div class="links"><a href="#scoring">Scoring</a><a href="#pricing">Pricing</a><a href="#integration">Integration</a><button class="cta-btn" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Get API key</button></div></div></nav>
-
-<!-- ===== HERO ===== -->
-<section class="hero"><div class="container">
-<div class="badge">REST API &middot; Pay per request</div>
-<h1>Address quality scoring for <em>Indian lending</em></h1>
-<p class="sub">Score any Indian address 0&ndash;100 at the point of loan origination. You get the score and evidence flags. Your LOS makes the decision.</p>
-<div class="hero-stats">
-<div class="stat"><div class="num">~120ms</div><div class="label">API response</div></div>
-<div class="stat"><div class="num">0&ndash;100</div><div class="label">Quality score</div></div>
-<div class="stat"><div class="num">5</div><div class="label">Scoring dimensions</div></div>
-<div class="stat"><div class="num">2</div><div class="label">API calls to score</div></div>
+<!-- ═══ HERO ═══ -->
+<section class="hero"><div class="container"><div class="hero-grid">
+<div>
+  <div class="hero-badge fade-up"><span></span> Pre-scrub intelligence API</div>
+  <h1 class="fade-up d1">Every address tells a story. Read it <em>before</em> bureau.</h1>
+  <p class="sub fade-up d2">AQS turns every address into a risk intelligence node — application velocity, identity patterns, and applicant history in one API call. Your LOS sees a form field. AQS sees the full picture.</p>
+  <div class="fade-up d3">
+    <a href="#cta" class="hero-cta">Request a live demo</a>
+    <a href="#api" class="hero-secondary">See the API response ↓</a>
+  </div>
+</div>
+<div class="fade-up d4">
+  <div class="api-block" style="margin-top:0">
+    <div class="api-header"><span class="api-method">POST</span><span class="api-path">/api/v1/score — 42 fields, 6 blocks</span></div>
+    <pre>{
+  <span class="k">"address_quality"</span>: {
+    <span class="k">"total_score"</span>: <span class="n">72</span>, <span class="k">"risk_tier"</span>: <span class="s">"MEDIUM_CONFIDENCE"</span>,
+    <span class="k">"component_scores"</span>: { <span class="k">"pincode"</span>: <span class="n">20</span>, <span class="k">"locality"</span>: <span class="n">15</span>,
+      <span class="k">"specificity"</span>: <span class="n">12</span>, <span class="k">"nominatim"</span>: <span class="n">15</span>, <span class="k">"gibberish"</span>: <span class="n">10</span> }
+  },
+  <span class="k">"identity_signals"</span>: {
+    <span class="k">"match_type"</span>: <span class="s">"pan_hash_exact"</span>,
+    <span class="k">"match_confidence"</span>: <span class="n">0.95</span>
+  },
+  <span class="k">"address_risk_graph"</span>: {
+    <span class="k">"velocity_score"</span>: <span class="n">0.6</span>,
+    <span class="k">"velocity_trend"</span>: { <span class="k">"acceleration_flag"</span>: <span class="b">true</span> }
+  },
+  <span class="k">"applicant_history"</span>: {
+    <span class="k">"ghost_risk_score"</span>: <span class="n">0.25</span>,
+    <span class="k">"repeat_applicant"</span>: <span class="b">true</span>
+  },
+  <span class="k">"combined_signals"</span>: {
+    <span class="k">"combined_risk_score"</span>: <span class="n">0.35</span>,
+    <span class="k">"signal_severity"</span>: <span class="s">"medium"</span>
+  },
+  <span class="k">"locus"</span>: { <span class="k">"household_confidence"</span>: <span class="n">0.85</span> }
+}</pre>
+  </div>
+</div>
 </div></div></section>
 
-<!-- ===== LIVE EXAMPLE ===== -->
-<section class="code-section"><div class="container"><div class="code-card">
-<div class="tab-bar"><div class="tab active" data-target="hero-req">Request</div><div class="tab" data-target="hero-res">Response</div></div>
-<pre id="hero-req"><span class="c"># Step 1: Lookup pincode (returns session token)</span>
-<span class="k">POST</span> https://api.aqs.in/v1/pincode/lookup
-<span class="k">Authorization:</span> Bearer aqs_your_key
-
-{ <span class="s">"pincode"</span>: <span class="s">"560001"</span> }
-
-<span class="c"># Step 2: Score the address</span>
-<span class="k">POST</span> https://api.aqs.in/v1/aqs/calculate
-<span class="k">Authorization:</span> Bearer aqs_your_key
-<span class="k">X-Pincode-Lookup:</span> SESSION_TOKEN_FROM_STEP_1
-
-{
-  <span class="s">"raw_address"</span>: <span class="s">"Flat 101, ABC Apartments, MG Road"</span>,
-  <span class="s">"pincode"</span>: <span class="s">"560001"</span>,
-  <span class="s">"parsed_components"</span>: { <span class="s">"locality"</span>: <span class="s">"Cubbon Park"</span> },
-  <span class="s">"application_ref"</span>: <span class="s">"LOAN-2024-00123"</span>,
-  <span class="s">"use_nominatim"</span>: <span class="n">false</span>
-}</pre>
-<pre id="hero-res" style="display:none">{
-  <span class="s">"aqs_score"</span>: <span class="n">87</span>,
-  <span class="s">"aqs_status"</span>: <span class="s">"high_confidence"</span>,
-  <span class="s">"checks"</span>: {
-    <span class="s">"pincode_city_state"</span>: { <span class="s">"score"</span>: <span class="n">20</span>, <span class="s">"max"</span>: <span class="n">20</span> },
-    <span class="s">"locality"</span>:           { <span class="s">"score"</span>: <span class="n">30</span>, <span class="s">"max"</span>: <span class="n">30</span> },
-    <span class="s">"specificity"</span>:        { <span class="s">"score"</span>: <span class="n">12</span>, <span class="s">"max"</span>: <span class="n">15</span> },
-    <span class="s">"nominatim"</span>:          { <span class="s">"score"</span>: <span class="n">15</span>, <span class="s">"max"</span>: <span class="n">25</span> },
-    <span class="s">"gibberish"</span>:          { <span class="s">"score"</span>: <span class="n">10</span>, <span class="s">"max"</span>: <span class="n">10</span> }
-  },
-  <span class="s">"flags"</span>: [],
-  <span class="s">"suggestions"</span>: [],
-  <span class="s">"rejection_reason"</span>: <span class="n">null</span>,
-  <span class="s">"audit_id"</span>: <span class="s">"a1b2c3d4-e5f6-..."</span>
-}</pre>
-</div></div></section>
-
-<!-- ===== SCORING ===== -->
-<section class="section" id="scoring"><div class="container">
-<h2>Five-dimension scoring</h2>
-<p class="subtitle">Every address scored across 100 points. Transparent, auditable, deterministic. Your LOS decides what to do with the score.</p>
-<div class="score-grid">
-<div class="score-item"><div class="pts a">/20</div><div class="name">Pincode & city-state truth</div></div>
-<div class="score-item"><div class="pts b">/30</div><div class="name">Locality membership</div></div>
-<div class="score-item"><div class="pts c">/15</div><div class="name">Address specificity</div></div>
-<div class="score-item"><div class="pts d">/25</div><div class="name">Geocode confidence</div></div>
-<div class="score-item"><div class="pts e">/10</div><div class="name">Gibberish detection</div></div>
-</div>
-<div class="range-grid">
-<div class="range-card high"><div class="range">AQS 85&ndash;100</div><div class="label">High confidence</div><div class="desc">Address verified across multiple dimensions. Strong pincode match, locality confirmed, specific enough for delivery. Typically used for auto-approval in lending flows.</div></div>
-<div class="range-card mid"><div class="range">AQS 50&ndash;84</div><div class="label">Medium confidence</div><div class="desc">Partial verification. Some dimensions scored well but others flagged — locality unconfirmed, low specificity, or geocode mismatch. Most NBFCs trigger additional verification here.</div></div>
-<div class="range-card low"><div class="range">AQS 0&ndash;49</div><div class="label">Low confidence</div><div class="desc">Significant quality issues. Flags may include gibberish patterns, locality not in pincode, city-state mismatch. Evidence flags explain exactly why. Most NBFCs require manual review or field verification.</div></div>
-</div>
-</div></section>
-
-<!-- ===== FLAGS ===== -->
-<section class="section sep"><div class="container">
-<h2>Evidence flags tell you why</h2>
-<p class="subtitle">The score tells you how much to trust. The flags tell you what's wrong.</p>
-<div class="feat-grid">
-<div class="feat-card"><div class="icon">[flag]</div><h3>CITY_STATE_MISMATCH</h3><p>User-provided city or state doesn't match pincode truth. The pincode says Karnataka but the applicant wrote Maharashtra.</p></div>
-<div class="feat-card"><div class="icon">[flag]</div><h3>LOCALITY_NOT_IN_PINCODE</h3><p>The locality claimed doesn't exist in this pincode's known localities. Could be a typo, could be fabricated.</p></div>
-<div class="feat-card"><div class="icon">[flag]</div><h3>GIBBERISH_DETECTED</h3><p>Address text shows adversarial patterns — consonant clusters, repeated characters, keyboard-mash sequences.</p></div>
-<div class="feat-card"><div class="icon">[flag]</div><h3>LOW_GRANULARITY</h3><p>No house number, flat number, or street name found. Address lacks the specificity needed for physical delivery or field verification.</p></div>
-<div class="feat-card"><div class="icon">[flag]</div><h3>NO_GEOCODE_HIT</h3><p>Address couldn't be geocoded. This is a soft signal — valid new colonies may not be in any database yet.</p></div>
-<div class="feat-card"><div class="icon">[flag]</div><h3>FRAUD_SUSPICIOUS_ATTEMPTS</h3><p>Multiple low-score attempts from this device/session within the configured window. Pattern suggests address cycling.</p></div>
-</div>
-</div></section>
-
-<!-- ===== FEATURES ===== -->
-<section class="section sep" id="features"><div class="container">
-<h2>Built for NBFC compliance</h2>
-<div class="feat-grid">
-<div class="feat-card"><div class="icon">[audit]</div><h3>RBI-ready audit trail</h3><p>Every scoring request produces an immutable, timestamped record. Component scores, raw input, fraud context — queryable by application ID or date range.</p></div>
-<div class="feat-card"><div class="icon">[shield]</div><h3>Fraud memory</h3><p>Tracks suspicious attempts across sessions per tenant. Configurable thresholds flag repeat offenders automatically. Your LOS decides the consequence.</p></div>
-<div class="feat-card"><div class="icon">[lock]</div><h3>Tenant isolation</h3><p>Your fraud signals, audit trail, and scoring config are fully isolated. No data crosses tenant boundaries.</p></div>
-<div class="feat-card"><div class="icon">[zap]</div><h3>~120ms response</h3><p>Redis-cached lookups, cached geocoding, optimized fuzzy matching. Built for real-time loan origination flows.</p></div>
-<div class="feat-card"><div class="icon">[webhook]</div><h3>LOS webhooks</h3><p>HMAC-signed webhook delivery to your Loan Origination System after every score. Exponential retry with dead-letter support.</p></div>
-<div class="feat-card"><div class="icon">[config]</div><h3>Your rules, your thresholds</h3><p>Configure fraud sensitivity, scoring feature flags, and webhook events per tenant. The scoring engine adapts to your risk appetite.</p></div>
-</div>
-</div></section>
-
-<!-- ===== PRICING ===== -->
-<section class="section sep" id="pricing"><div class="container">
-<h2>Simple per-request pricing</h2>
-<p class="subtitle">Pay only for what you use. No setup fees. No monthly minimums.</p>
-<div class="pricing-grid">
-<div class="price-card">
-<div class="plan-name">Starter</div>
-<div class="price"><span class="currency">&#8377;</span>0.75 <span class="unit">/ score</span></div>
-<div class="price-note">Up to 10,000 requests/month</div>
-<ul><li>Full 5-dimension scoring</li><li>Evidence flags</li><li>Fraud detection</li><li>Audit trail (30-day retention)</li><li>Email support</li></ul>
-<button class="plan-cta secondary" onclick="window.location.href='mailto:ravi@example.com?subject=AQS%20Starter'">Get started</button>
-</div>
-<div class="price-card featured">
-<div class="plan-name">Growth</div>
-<div class="price"><span class="currency">&#8377;</span>0.50 <span class="unit">/ score</span></div>
-<div class="price-note">10,000 &ndash; 100,000 requests/month</div>
-<ul><li>Everything in Starter</li><li>LOS webhooks (HMAC signed)</li><li>Configurable thresholds</li><li>Audit trail (1-year retention)</li><li>Priority support + SLA</li></ul>
-<button class="plan-cta primary" onclick="window.location.href='mailto:ravi@example.com?subject=AQS%20Growth'">Get started</button>
-</div>
-<div class="price-card">
-<div class="plan-name">Enterprise</div>
-<div class="price"><span class="currency">&#8377;</span>0.30 <span class="unit">/ score</span></div>
-<div class="price-note">100,000+ requests/month</div>
-<ul><li>Everything in Growth</li><li>Custom fraud rules</li><li>Unlimited audit retention</li><li>Dedicated tenant config</li><li>Dedicated support + onboarding</li></ul>
-<button class="plan-cta secondary" onclick="window.location.href='mailto:ravi@example.com?subject=AQS%20Enterprise'">Contact us</button>
-</div>
-</div>
-<p class="pricing-note">All plans include tenant isolation, RBI-compliant audit logging, and TLS 1.3. Hosted in AWS Mumbai (ap-south-1).</p>
-</div></section>
-
-<!-- ===== INTEGRATION ===== -->
-<section class="section sep" id="integration"><div class="container">
-<h2>Integrate in 15 minutes</h2>
-<p class="subtitle">Two API calls. You get a score and flags. Your LOS decides what to do.</p>
-
-<div class="int-step">
-<div class="step-header"><div class="step-num">1</div><div class="step-title">Get your API key</div></div>
-<p class="step-desc">We provision your tenant and send you an API key. All requests authenticate with this key.</p>
-<div class="code-block"><pre><span class="k">Authorization:</span> Bearer aqs_k8xP2mN4vQ7rLsT9...</pre></div>
-</div>
-
-<div class="int-step">
-<div class="step-header"><div class="step-num">2</div><div class="step-title">Lookup the pincode</div></div>
-<p class="step-desc">Validates the pincode and returns a session token, state, district, and known localities. The session token is required for scoring.</p>
-<div class="code-block" id="step2-code">
-<div class="lang-bar"><div class="lang-tab active" data-group="2" data-lang="curl2">curl</div><div class="lang-tab" data-group="2" data-lang="py2">Python</div><div class="lang-tab" data-group="2" data-lang="js2">Node.js</div></div>
-<pre data-group="2" data-lang="curl2"><span class="f">curl</span> -X POST https://api.aqs.in/v1/pincode/lookup \
-  -H <span class="s">"Authorization: Bearer aqs_YOUR_KEY"</span> \
-  -H <span class="s">"Content-Type: application/json"</span> \
-  -d <span class="s">'{"pincode": "560001"}'</span>
-
-<span class="c"># Response includes session_token, state, district, localities</span></pre>
-<pre data-group="2" data-lang="py2" style="display:none"><span class="k">import</span> requests
-
-lookup = requests.<span class="f">post</span>(
-    <span class="s">"https://api.aqs.in/v1/pincode/lookup"</span>,
-    headers={<span class="s">"Authorization"</span>: <span class="s">"Bearer aqs_YOUR_KEY"</span>},
-    json={<span class="s">"pincode"</span>: <span class="s">"560001"</span>},
-)
-session_token = lookup.<span class="f">json</span>()[<span class="s">"session_token"</span>]
-<span class="c"># Also returns: state, district, localities</span></pre>
-<pre data-group="2" data-lang="js2" style="display:none"><span class="k">const</span> lookup = <span class="k">await</span> <span class="f">fetch</span>(<span class="s">"https://api.aqs.in/v1/pincode/lookup"</span>, {
-  method: <span class="s">"POST"</span>,
-  headers: {
-    <span class="s">"Authorization"</span>: <span class="s">"Bearer aqs_YOUR_KEY"</span>,
-    <span class="s">"Content-Type"</span>: <span class="s">"application/json"</span>,
-  },
-  body: JSON.<span class="f">stringify</span>({ pincode: <span class="s">"560001"</span> }),
-});
-<span class="k">const</span> { session_token } = <span class="k">await</span> lookup.<span class="f">json</span>();
-<span class="c">// Also returns: state, district, localities</span></pre>
+<!-- ═══ PRINCIPLE + TRUST ═══ -->
+<div class="principle"><div class="container">
+  <div class="principle-text">We <em>compute</em>. You <em>decide</em>.</div>
+  <div class="principle-sub">Facts, scores, reason codes. No recommended actions. Your policy engine owns the playbook.</div>
 </div></div>
+<div class="trust-bar"><div class="container"><div class="trust-bar-inner">
+  <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Zero PII — keyed hashes only</div>
+  <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> &lt;200ms latency</div>
+  <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> One endpoint</div>
+  <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg> DPDPA-safe</div>
+</div></div></div>
 
-<div class="int-step">
-<div class="step-header"><div class="step-num">3</div><div class="step-title">Score the address</div></div>
-<p class="step-desc">Send the address with the session token. Get back a score, component breakdown, and evidence flags in ~120ms.</p>
-<div class="code-block" id="step3-code">
-<div class="lang-bar"><div class="lang-tab active" data-group="3" data-lang="curl3">curl</div><div class="lang-tab" data-group="3" data-lang="py3">Python</div><div class="lang-tab" data-group="3" data-lang="js3">Node.js</div></div>
-<pre data-group="3" data-lang="curl3"><span class="f">curl</span> -X POST https://api.aqs.in/v1/aqs/calculate \
-  -H <span class="s">"Authorization: Bearer aqs_YOUR_KEY"</span> \
-  -H <span class="s">"X-Pincode-Lookup: SESSION_TOKEN"</span> \
-  -H <span class="s">"Content-Type: application/json"</span> \
-  -d <span class="s">'{
-    "raw_address": "Flat 101, ABC Apartments, MG Road",
-    "pincode": "560001",
-    "parsed_components": {"locality": "Cubbon Park"},
-    "application_ref": "LOAN-2024-00123",
-    "use_nominatim": false
-  }'</span>
+<!-- ═══ LIVE DEMO ═══ -->
+<section class="calc-section" id="calculator"><div class="container">
+  <div class="section-label">See it live</div>
+  <div class="section-title">Score any Indian address in under 200ms.</div>
+  <div class="section-sub">Request a live demo — we'll score your real addresses against the AQS engine and walk you through the response. No integration needed to see it work.</div>
+  <div style="margin-top:32px"><a href="#cta" class="hero-cta">Request a live demo</a></div>
+</div></section>
 
-<span class="c"># Returns: aqs_score, checks, flags, audit_id</span></pre>
-<pre data-group="3" data-lang="py3" style="display:none">result = requests.<span class="f">post</span>(
-    <span class="s">"https://api.aqs.in/v1/aqs/calculate"</span>,
-    headers={
-        <span class="s">"Authorization"</span>: <span class="s">"Bearer aqs_YOUR_KEY"</span>,
-        <span class="s">"X-Pincode-Lookup"</span>: session_token,
+<!-- ═══ ADDRESS CAPTURE WIDGET ═══ -->
+<section><div class="container">
+  <div class="section-label">Optional: better input, better scores</div>
+  <div class="section-title">The AQS Address Capture Widget.</div>
+  <div class="section-sub">Replace your free-text address field with a structured, validated entry flow. Better input means higher geocode confidence, which means more reliable risk signals downstream.</div>
+
+  <div class="widget-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px;align-items:center">
+    <div>
+      <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:12px;padding:28px;font-family:var(--font-mono);font-size:13px;line-height:2.2">
+        <div style="color:var(--teal);font-weight:700;margin-bottom:12px">Widget flow:</div>
+        <div><span style="color:var(--amber)">①</span> <span style="color:var(--text)">Pin code</span> <span style="color:var(--text-muted)">→ auto-fills city, state, district</span></div>
+        <div><span style="color:var(--amber)">②</span> <span style="color:var(--text)">Locality</span> <span style="color:var(--text-muted)">→ dropdown from 155K+ verified localities</span></div>
+        <div><span style="color:var(--amber)">③</span> <span style="color:var(--text)">Street</span> <span style="color:var(--text-muted)">→ dropdown from OSM street index</span></div>
+        <div><span style="color:var(--amber)">④</span> <span style="color:var(--text)">Building / flat</span> <span style="color:var(--text-muted)">→ free text</span></div>
+        <div><span style="color:var(--amber)">⑤</span> <span style="color:var(--text)">Landmark</span> <span style="color:var(--text-muted)">→ optional, verified for distance</span></div>
+        <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px;color:var(--teal)">→ capture_quality_score included in API response</div>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-size:18px;font-weight:700;margin-bottom:14px">Why it matters</h3>
+      <p style="font-size:14px;color:var(--text-dim);line-height:1.7;margin-bottom:14px">"Near big tree, opposite pink building" scores low because the geocoder can't resolve it. A structured address with validated pin code + known locality + OSM street scores high — before AQS even runs.</p>
+      <p style="font-size:14px;color:var(--text-dim);line-height:1.7;margin-bottom:14px">The widget is a JavaScript embed — one script tag in your application form. It validates each layer in real-time and emits a structured address object your LOS sends to AQS.</p>
+      <p style="font-size:13px;color:var(--text-muted);font-style:italic">Optional. AQS works with free-text addresses too. The widget just makes the scores more reliable.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- ═══ PROBLEM ═══ -->
+<section><div class="container">
+  <div class="section-label">The problem</div>
+  <div class="section-title">Your origination pipeline is blind to three things that cost real money.</div>
+  <div class="problem-grid">
+    <div class="problem-card"><div class="problem-num">60%+</div><h3>Applicants abandon mid-flow</h3><p>They trigger your bureau pull, consume KYC resources, then vanish. Sunk scrub cost with zero recovery.</p></div>
+    <div class="problem-card"><div class="problem-num">2-3×</div><h3>Household exposure is invisible</h3><p>Husband applies on Flipkart, wife applies on Amazon. Both are legitimate — but the NBFC doesn't know the household now has 2× the EMI burden. Each application arrives as an isolated event.</p></div>
+    <div class="problem-card"><div class="problem-num">6+</div><h3>Identities at one address</h3><p>Multiple PANs at the same geocoded address in 90 days. Joint family or synthetic cluster? Without address intelligence, you can't tell.</p></div>
+  </div>
+</div></section>
+
+<!-- ═══ VELOCITY ═══ -->
+<section style="background:var(--navy)"><div class="container">
+  <div class="section-label">Velocity intelligence</div>
+  <div class="section-title">Not just "how many applications" — is this address getting hotter?</div>
+  <div class="velocity-grid">
+    <div class="velocity-chart">
+      <div style="font-size:13px;font-weight:700">Applications at address locus</div>
+      <div style="font-size:11px;color:var(--text-muted)">Monthly — last 6 months</div>
+      <div class="chart-bars">
+        <div class="chart-bar"><div class="bar bar-normal" style="height:14%"><span class="bar-label">1</span></div><span class="month">Oct</span></div>
+        <div class="chart-bar"><div class="bar bar-normal" style="height:14%;animation-delay:.1s"><span class="bar-label">1</span></div><span class="month">Nov</span></div>
+        <div class="chart-bar"><div class="bar bar-normal" style="height:22%;animation-delay:.2s"><span class="bar-label">2</span></div><span class="month">Dec</span></div>
+        <div class="chart-bar"><div class="bar bar-normal" style="height:32%;animation-delay:.3s"><span class="bar-label">3</span></div><span class="month">Jan</span></div>
+        <div class="chart-bar"><div class="bar bar-normal" style="height:50%;animation-delay:.4s"><span class="bar-label">5</span></div><span class="month">Feb</span></div>
+        <div class="chart-bar"><div class="bar bar-spike" style="height:100%;animation-delay:.5s"><span class="bar-label">11</span></div><span class="month">Mar</span></div>
+      </div>
+    </div>
+    <div class="velocity-text">
+      <h3>Snapshot counts miss the pattern</h3>
+      <p>"11 applications in 90 days" looks the same whether it's steady or a sudden spike. The acceleration is the real signal.</p>
+      <div class="velocity-callout">if velocity_trend.acceleration_ratio &gt; 2.0<br>&nbsp;&nbsp;and unique_identities_90d &gt; 4<br>&nbsp;&nbsp;→ flag for review</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ═══ THREE LAYERS ═══ -->
+<section><div class="container">
+  <div class="section-label">One API call</div>
+  <div class="section-title">Structured signals your policy engine can consume.</div>
+  <div class="section-sub">You already send AQS the address. Add keyed-hashed PII to the same call — unlock three additional signal layers.</div>
+  <div class="layers-grid">
+    <div class="layer-card"><div class="layer-icon">📍</div><h3>Address + locus</h3><ul>
+      <li>Quality score (0-100) with 5 components</li><li>Velocity at address (30/90d) + acceleration trend</li><li>Dealer-to-address distance (pincode centroid)</li><li>Household confidence + premise type flags</li>
+    </ul></div>
+    <div class="layer-card"><div class="layer-icon">👥</div><h3>Identity + risk graph</h3><ul>
+      <li>Graph-style identity (PAN strong, phone moderate)</li><li>Unique identities count at address locus</li><li>PII rotation detection across attempts</li><li>Dealer concentration + cross-profile overlap</li>
+    </ul></div>
+    <div class="layer-card"><div class="layer-icon">🔄</div><h3>Applicant history</h3><ul>
+      <li>Repeat applicant detection</li><li>Prior attempt stage + outcome</li><li>Ghost risk score (0.0 - 1.0)</li><li>Categorized reason codes by signal class</li>
+    </ul></div>
+  </div>
+</div></section>
+
+<!-- ═══ COMBINED SIGNALS ═══ -->
+<section class="api-section"><div class="container">
+  <div class="section-label">Combined signals</div>
+  <div class="section-title">Patterns only visible when the layers talk to each other.</div>
+  <table class="signals-table"><thead><tr><th>Signal</th><th>What AQS detects</th><th>Severity</th></tr></thead><tbody>
+    <tr><td>Velocity acceleration</td><td>1 app/month → 11. Acceleration ratio 2.93×. Dormant-to-active.</td><td><span class="risk-badge high">High</span></td></tr>
+    <tr><td>Identity concentration</td><td>6 different PANs at same address in 90 days. Score discounted for multi-unit.</td><td><span class="risk-badge high">High</span></td></tr>
+    <tr><td>Address quality jump</td><td>Same PAN seen before at score 35. Now back at 82.</td><td><span class="risk-badge elevated">Elevated</span></td></tr>
+    <tr><td>PII rotation</td><td>Husband PAN + wife phone → abandoned. Now wife PAN + husband phone.</td><td><span class="risk-badge medium">Medium</span></td></tr>
+    <tr><td>Dealer geo-mismatch</td><td>Dealer in Pune, 4 of 10 apps 300km+ away. Pincode-to-pincode distance.</td><td><span class="risk-badge high">High</span></td></tr>
+  </tbody></table>
+</div></section>
+
+<!-- ═══ API RESPONSE ═══ -->
+<section id="api"><div class="container">
+  <div class="section-label">Developer-ready</div>
+  <div class="section-title">42 fields. 6 blocks. One endpoint.</div>
+  <div class="section-sub">One POST endpoint. Add hashed identity fields alongside the address — the response includes the address score plus all premium signal layers.</div>
+  <div class="api-block"><div class="api-header"><span class="api-method">POST</span><span class="api-path">/api/v1/score — full response</span></div>
+    <pre>{
+  <span class="k">"address_quality"</span>: {
+    <span class="k">"total_score"</span>: <span class="n">72</span>,
+    <span class="k">"risk_tier"</span>: <span class="s">"MEDIUM_CONFIDENCE"</span>,
+    <span class="k">"component_scores"</span>: {
+      <span class="k">"pincode_city_state"</span>: <span class="n">20</span>, <span class="k">"locality"</span>: <span class="n">15</span>,
+      <span class="k">"specificity"</span>: <span class="n">12</span>, <span class="k">"nominatim"</span>: <span class="n">15</span>, <span class="k">"gibberish"</span>: <span class="n">10</span>
     },
-    json={
-        <span class="s">"raw_address"</span>: <span class="s">"Flat 101, ABC Apartments, MG Road"</span>,
-        <span class="s">"pincode"</span>: <span class="s">"560001"</span>,
-        <span class="s">"parsed_components"</span>: {<span class="s">"locality"</span>: <span class="s">"Cubbon Park"</span>},
-        <span class="s">"application_ref"</span>: <span class="s">"LOAN-2024-00123"</span>,
-        <span class="s">"use_nominatim"</span>: <span class="n">False</span>,
-    },
-).<span class="f">json</span>()
-
-score = result[<span class="s">"aqs_score"</span>]   <span class="c"># 87</span>
-flags = result[<span class="s">"flags"</span>]       <span class="c"># [] (clean address)</span>
-audit = result[<span class="s">"audit_id"</span>]   <span class="c"># for your records</span></pre>
-<pre data-group="3" data-lang="js3" style="display:none"><span class="k">const</span> res = <span class="k">await</span> <span class="f">fetch</span>(<span class="s">"https://api.aqs.in/v1/aqs/calculate"</span>, {
-  method: <span class="s">"POST"</span>,
-  headers: {
-    <span class="s">"Authorization"</span>: <span class="s">"Bearer aqs_YOUR_KEY"</span>,
-    <span class="s">"X-Pincode-Lookup"</span>: sessionToken,
-    <span class="s">"Content-Type"</span>: <span class="s">"application/json"</span>,
+    <span class="k">"flags"</span>: [<span class="s">"LOCALITY_FUZZY_MATCH"</span>]
   },
-  body: JSON.<span class="f">stringify</span>({
-    raw_address: <span class="s">"Flat 101, ABC Apartments, MG Road"</span>,
-    pincode: <span class="s">"560001"</span>,
-    parsed_components: { locality: <span class="s">"Cubbon Park"</span> },
-    application_ref: <span class="s">"LOAN-2024-00123"</span>,
-    use_nominatim: <span class="n">false</span>,
-  }),
-});
-<span class="k">const</span> { aqs_score, flags, audit_id } = <span class="k">await</span> res.<span class="f">json</span>();
-<span class="c">// aqs_score: 87, flags: [], audit_id: "a1b2..."</span></pre>
-</div></div>
-
-<div class="int-step">
-<div class="step-header"><div class="step-num">4</div><div class="step-title">Use the score in your LOS</div></div>
-<p class="step-desc">The score and flags feed into your existing decisioning logic. AQS scores, you decide.</p>
-<div class="code-block" id="step4-code">
-<div class="lang-bar"><div class="lang-tab active" data-group="4" data-lang="py4">Python</div><div class="lang-tab" data-group="4" data-lang="js4">Node.js</div></div>
-<pre data-group="4" data-lang="py4">score = result[<span class="s">"aqs_score"</span>]
-flags = result[<span class="s">"flags"</span>]
-
-<span class="c"># Your decisioning logic — AQS doesn't prescribe actions</span>
-<span class="k">if</span> score >= <span class="n">85</span> <span class="k">and not</span> flags:
-    <span class="f">approve_loan</span>(application_id)
-
-<span class="k">elif</span> score >= <span class="n">50</span>:
-    <span class="f">request_additional_kyc</span>(application_id, flags=flags)
-
-<span class="k">elif</span> <span class="s">"GIBBERISH_DETECTED"</span> <span class="k">in</span> flags:
-    <span class="f">reject_application</span>(application_id, reason=<span class="s">"Address quality insufficient"</span>)
-
-<span class="k">else</span>:
-    <span class="f">trigger_field_verification</span>(application_id)</pre>
-<pre data-group="4" data-lang="js4" style="display:none"><span class="k">const</span> { aqs_score, flags } = result;
-
-<span class="c">// Your decisioning logic — AQS doesn't prescribe actions</span>
-<span class="k">if</span> (aqs_score >= <span class="n">85</span> && flags.length === <span class="n">0</span>) {
-  <span class="k">await</span> <span class="f">approveLoan</span>(applicationId);
-}
-<span class="k">else if</span> (aqs_score >= <span class="n">50</span>) {
-  <span class="k">await</span> <span class="f">requestAdditionalKyc</span>(applicationId, { flags });
-}
-<span class="k">else if</span> (flags.<span class="f">includes</span>(<span class="s">"GIBBERISH_DETECTED"</span>)) {
-  <span class="k">await</span> <span class="f">rejectApplication</span>(applicationId, <span class="s">"Address quality insufficient"</span>);
-}
-<span class="k">else</span> {
-  <span class="k">await</span> <span class="f">triggerFieldVerification</span>(applicationId);
+  <span class="k">"identity_signals"</span>: {
+    <span class="k">"match_type"</span>: <span class="s">"pan_hash_exact"</span>, <span class="k">"match_confidence"</span>: <span class="n">0.95</span>,
+    <span class="k">"linked_keys"</span>: { <span class="k">"pan"</span>: <span class="n">1</span>, <span class="k">"phone"</span>: <span class="n">2</span>, <span class="k">"email"</span>: <span class="n">1</span> },
+    <span class="k">"address_loci_linked"</span>: <span class="n">3</span>
+  },
+  <span class="k">"address_risk_graph"</span>: {
+    <span class="k">"facts"</span>: { <span class="k">"applications_90d"</span>: <span class="n">5</span>, <span class="k">"unique_profiles_90d"</span>: <span class="n">2</span> },
+    <span class="k">"scores"</span>: { <span class="k">"velocity"</span>: <span class="n">0.6</span>, <span class="k">"identity_rotation"</span>: <span class="n">0.3</span> },
+    <span class="k">"velocity_trend"</span>: { <span class="k">"trend_direction"</span>: <span class="s">"accelerating"</span>, <span class="k">"acceleration_flag"</span>: <span class="b">true</span> }
+  },
+  <span class="k">"applicant_history"</span>: {
+    <span class="k">"prior_checks"</span>: <span class="n">2</span>, <span class="k">"ghost_risk_score"</span>: <span class="n">0.25</span>,
+    <span class="k">"repeat_applicant"</span>: <span class="b">true</span>, <span class="k">"days_since_last_check"</span>: <span class="n">15</span>
+  },
+  <span class="k">"combined_signals"</span>: {
+    <span class="k">"combined_risk_score"</span>: <span class="n">0.35</span>, <span class="k">"signal_severity"</span>: <span class="s">"medium"</span>,
+    <span class="k">"process_signals"</span>: [<span class="s">"repeat_applicant"</span>],
+    <span class="k">"address_signals"</span>: [<span class="s">"high_identity_count_at_address"</span>]
+  },
+  <span class="k">"locus"</span>: {
+    <span class="k">"household_confidence"</span>: <span class="n">0.85</span>,
+    <span class="k">"multi_unit_flag"</span>: <span class="b">false</span>, <span class="k">"commercial_flag"</span>: <span class="b">false</span>
+  }
 }</pre>
-</div></div>
-
+  </div>
 </div></section>
 
-<!-- ===== CTA ===== -->
+<!-- ═══ INTEGRATION ═══ -->
+<section class="api-section"><div class="container">
+  <div class="section-label">Integration</div>
+  <div class="section-title">Where AQS sits in your borrower's journey.</div>
+  <div class="section-sub">AQS fires the moment your application form captures the address. Before bureau. Before KYC. The response informs every downstream decision.</div>
+  <div class="steps">
+    <div class="step-card"><div class="step-num">01</div><h3>Borrower enters address</h3><p>Free-text in your existing form, or via the optional AQS Address Capture Widget for structured, validated input.</p><span class="step-arrow">→</span></div>
+    <div class="step-card"><div class="step-num">02</div><h3>Your LOS calls AQS</h3><p>POST /api/v1/score with address + HMAC-hashed PAN/phone. Raw PII never leaves your systems. One call.</p><span class="step-arrow">→</span></div>
+    <div class="step-card"><div class="step-num">03</div><h3>AQS returns 42 fields</h3><p>Address quality, identity signals, risk graph, applicant history, combined signals, locus — all in &lt;200ms.</p><span class="step-arrow">→</span></div>
+    <div class="step-card"><div class="step-num">04</div><h3>Your policy engine decides</h3><p>Proceed to bureau? Step-up verification? Flag for review? Your rules, your playbook. AQS provides the evidence.</p></div>
+  </div>
+</div></section>
+
+<!-- ═══ TRUST ═══ -->
+<section><div class="container">
+  <div class="section-label">Trust architecture</div>
+  <div class="section-title">PII-blind by design. Evidence-only by principle.</div>
+  <div class="trust-grid">
+    <div class="trust-card"><div class="t-icon">🔒</div><div><h4>Zero PII on our servers</h4><p>HMAC-keyed hashes only. The NBFC controls the key. We are architecturally unable to identify your customers.</p></div></div>
+    <div class="trust-card"><div class="t-icon">📋</div><div><h4>DPDPA-safe by default</h4><p>Keyed-hashed identifiers with lender-managed keys. Geocoordinates from pincode centroids. Compliance review in minutes.</p></div></div>
+    <div class="trust-card"><div class="t-icon">⚖️</div><div><h4>You own the decisions</h4><p>Facts, scores, reason codes — never recommended actions. Your policy engine maps signals to decisions.</p></div></div>
+    <div class="trust-card"><div class="t-icon">🔍</div><div><h4>Fully auditable</h4><p>Every response carries rules_version, scoring_version, and feature flags. Governance metadata answers "why did this score change?"</p></div></div>
+    <div class="trust-card"><div class="t-icon">🏢</div><div><h4>Tenant-isolated</h4><p>Each lender's data strictly isolated. No cross-lender signals unless consortium agreement.</p></div></div>
+    <div class="trust-card"><div class="t-icon">🏗️</div><div><h4>Backward compatible</h4><p>No identity block? Same response as today. Premium layers activate only when hashed PII is provided.</p></div></div>
+  </div>
+</div></section>
+
+<!-- ═══ CTA ═══ -->
 <section class="cta-section" id="cta"><div class="container">
-<h2>Score your first address in 15 minutes</h2>
-<p>Get an API key and start integrating today.</p>
-<a href="mailto:ravi@example.com?subject=AQS%20API%20Key%20Request" class="btn-primary">Request API key</a>
+  <div class="section-label fade-up">Get started</div>
+  <h2 class="fade-up d1">Every address tells a story.<br>Your LOS only reads the <em>first page</em>.</h2>
+  <p class="fade-up d2">30-day pilot. Observation mode first. We show you what your origination pipeline is missing — then you decide.</p>
+  <form class="cta-form fade-up d3" onsubmit="return handleSubmit(event)">
+    <input type="email" placeholder="Work email" required id="email-input">
+    <button type="submit">Request pilot access</button>
+  </form>
+  <div class="cta-note fade-up d4">We'll reach out within 24 hours.</div>
+  <div id="success-msg" style="display:none;margin-top:18px;padding:14px 22px;background:var(--teal-glow);border:1px solid rgba(16,185,129,.2);border-radius:8px;color:var(--teal);font-weight:600;font-size:14px">Thank you. We'll be in touch within 24 hours.</div>
 </div></section>
 
-<footer><div class="container"><p>AQS &mdash; Address Quality Score API for Indian lending &middot; Hosted in AWS Mumbai (ap-south-1)</p></div></footer>
+<footer><div class="container">AQS — Origination Risk Intelligence &nbsp;|&nbsp; Bangalore, India &nbsp;|&nbsp; © 2026</div></footer>
 
 <script>
-document.addEventListener('click',function(e){
-var t=e.target.closest('.tab,.lang-tab');if(!t)return;
-if(t.classList.contains('tab')){var id=t.dataset.target,c=t.closest('.code-card');c.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});t.classList.add('active');c.querySelectorAll('pre[id]').forEach(function(p){p.style.display='none'});document.getElementById(id).style.display='block'}
-if(t.classList.contains('lang-tab')){var g=t.dataset.group,l=t.dataset.lang,b=t.closest('.code-block');b.querySelectorAll('.lang-tab').forEach(function(x){x.classList.remove('active')});t.classList.add('active');b.querySelectorAll('pre[data-group="'+g+'"]').forEach(function(p){p.style.display=p.dataset.lang===l?'block':'none'})}
-});
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('fade-up');obs.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.problem-card,.layer-card,.step-card,.trust-card').forEach(el=>{el.style.opacity='0';obs.observe(el)});
+function handleSubmit(e){e.preventDefault();document.querySelector('.cta-form').style.display='none';document.getElementById('success-msg').style.display='block';return false}
 </script>
 </body>
 </html>
